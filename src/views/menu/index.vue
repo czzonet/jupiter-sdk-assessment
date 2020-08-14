@@ -9,6 +9,7 @@
       <el-menu-item index="/main">Main page</el-menu-item>
       <el-menu-item index="/main">File</el-menu-item>
       <el-menu-item index="/main/hello/add">New file</el-menu-item>
+      <el-menu-item index="/main/hello/total">View file</el-menu-item>
     </el-menu>
   </div>
 </template>

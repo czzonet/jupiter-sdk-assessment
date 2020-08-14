@@ -6,7 +6,10 @@ const store = {
     loading: false,
     editorTitle: "",
     editorContent: "",
+    totalTable: [],
+    totalCount: 0,
     pipeEditor: {},
+    pipePagination: {},
   },
   mutations: {
     LOADING: (state, payload: boolean) => {
@@ -18,14 +21,28 @@ const store = {
     LOADING_OFF: (state, payload: boolean) => {
       state.loading = payload;
     },
-    PIPEEDITOR: (state, payload: boolean) => {
-      state.pipeEditor = payload;
-    },
+
     EDITORTITLE: (state, payload: string) => {
       state.editorTitle = payload;
     },
     EDITORCONTENT: (state, payload: string) => {
       state.editorContent = payload;
+    },
+    TOTALTABLE: (state, payload: any[]) => {
+      state.totalTable.splice(
+        0,
+        state.totalTable.length,
+        ...JSON.parse(JSON.stringify(payload))
+      );
+    },
+    TOTALCOUNT: (state, payload: number) => {
+      state.totalCount = payload;
+    },
+    PIPEEDITOR: (state, payload: boolean) => {
+      state.pipeEditor = payload;
+    },
+    PIPEPAGINATION: (state, payload: boolean) => {
+      state.pipePagination = payload;
     },
   },
   modules: {},
@@ -50,6 +67,29 @@ const store = {
         commit("LOADING_OFF", false);
       }
     },
+    Total: async ({ state, commit, dispatch }, payload) => {
+      try {
+        commit("LOADING_ON", true);
+        const pagination = JSON.parse(
+          JSON.stringify(state.pipePagination.$data)
+        );
+
+        const res = await total({
+          page: pagination.page,
+          limit: pagination.limit,
+        });
+        console.log("[I] [Total]: ", res.data);
+        commit("TOTALTABLE", res.data.data);
+        commit("TOTALCOUNT", res.data.count);
+
+        return true;
+      } catch (error) {
+        console.log("[E] [Total]: ", error);
+        return false;
+      } finally {
+        commit("LOADING_OFF", false);
+      }
+    },
   },
 } as MyStoreOption<State>;
 
@@ -60,6 +100,10 @@ type State = {
   loading: boolean;
   editorTitle: string;
   editorContent: string;
+
+  totalTable: any[];
+  totalCount: number;
   /** Pipe of components so it is easy to access realtime data */
   pipeEditor: any;
+  pipePagination: any;
 };
