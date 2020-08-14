@@ -28,6 +28,7 @@ export default Vue.extend({
     submit() {
       (this as any).Add().then((d: any) => {
         d ? this.$message.success("Success") : this.$message.error("Error");
+        this.$router.push("/main/hello/total");
       });
     },
   },
