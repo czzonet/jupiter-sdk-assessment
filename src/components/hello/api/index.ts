@@ -1,19 +1,23 @@
-/** 全局配置的请求 */
+/** request */
 import request from "@/utils/request";
 /** define */
 import { NAME } from "../define";
 
 /**
- * 服务器请求 封装格式
+ * url requert
  */
-const myrequert = (routerpaths: string[], payload: any) => {
-  /** 路由路径前缀 */
+const myrequert = (
+  routerpaths: string[],
+  data: any = {},
+  method: "get" | "post" = "post"
+) => {
+  /** PREFIX */
   const PREFIX = `/api/` + NAME;
   const url = [PREFIX, ...routerpaths].join(`/`);
   return request({
     url,
-    method: "post",
-    data: payload,
+    method,
+    data,
   });
 };
 

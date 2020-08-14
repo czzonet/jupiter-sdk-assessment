@@ -14,5 +14,11 @@ export default {
       component: () =>
         import(/* webpackChunkName: "helloworld" */ "../home.vue"),
     },
+    {
+      path: "add",
+      meta: { name: NAME },
+      component: () =>
+        import(/* webpackChunkName: "helloworld" */ "../views/add/add.vue"),
+    },
   ],
 };
