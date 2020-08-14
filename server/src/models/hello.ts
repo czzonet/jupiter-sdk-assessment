@@ -2,6 +2,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
   const hello = sequelize.define(
     "hello",
     {
+      title: DataTypes.STRING,
       date: DataTypes.DATE,
     },
     {}

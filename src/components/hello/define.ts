@@ -5,6 +5,6 @@
 /** define */
 export const CONTENT = `欢迎`;
 
-export const NAME = `helloworld`;
+export const NAME = `hello`;
 
 export const MODULE_HOME = `home`;

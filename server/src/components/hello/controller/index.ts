@@ -22,7 +22,13 @@ export const add: RequestHandler = async (req, res, next) => {
 
   try {
     // Add logic here
-    throw new Error("Add failed.");
+    const { title, content } = req.body;
+
+    await models[MODEL].create({ title });
+    res.json({
+      code: 200,
+      message: "ok",
+    });
   } catch (error) {
     next(error);
   }
