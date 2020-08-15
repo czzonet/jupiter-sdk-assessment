@@ -42,6 +42,45 @@ export const total: RequestHandler = async (req, res, next) => {
   }
 };
 
+export const show: RequestHandler = async (req, res, next) => {
+  debug(`body: %O`, req.body);
+
+  try {
+    // Add logic here
+
+    let { id } = req.body;
+
+    if (typeof id !== "number" || id < 1) {
+      id = 1;
+    }
+
+    const record = await models[MODEL].findOne({
+      where: { id },
+      attributes: ["id", "title"],
+    });
+
+    /** Output file name with id */
+    const uploadPath = path.resolve(
+      __dirname,
+      "../../../../../../upload/" + id
+    );
+    /** Read file */
+    const content = await util.promisify(readFile)(uploadPath, {
+      encoding: "utf8",
+    });
+
+    const data = { ...JSON.parse(JSON.stringify(record)), content };
+
+    res.json({
+      code: 200,
+      message: "ok",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const add: RequestHandler = async (req, res, next) => {
   debug(`body: %O`, req.body);
 
@@ -75,6 +114,29 @@ export const change: RequestHandler = async (req, res, next) => {
 
   try {
     // Add logic here
+    const { id, title, content } = req.body;
+
+    const recordNew = await models[MODEL].update(
+      { title },
+      {
+        where: { id },
+      }
+    );
+
+    /** Output file name with id */
+    const uploadPath = path.resolve(
+      __dirname,
+      "../../../../../../upload/" + id
+    );
+    /** Write to file */
+    await util.promisify(writeFile)(uploadPath, content, {
+      encoding: "utf8",
+    });
+
+    res.json({
+      code: 200,
+      message: "ok",
+    });
   } catch (error) {
     next(error);
   }

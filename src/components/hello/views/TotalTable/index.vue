@@ -14,9 +14,11 @@
       label="
     Operations"
     >
-      <template>
+      <template slot-scope="scope">
         <div class="wrapper">
-          <el-button type="text">Edit</el-button>
+          <el-button type="text" @click="editHandler(scope.row)"
+            >Edit</el-button
+          >
         </div>
       </template>
     </el-table-column>
@@ -34,6 +36,11 @@ export default Vue.extend({
   },
   computed: {
     ...mapState(NAME, ["totalTable"]),
+  },
+  methods: {
+    editHandler(row: any) {
+      this.$router.push(`/main/${NAME}/change/${row.id}`);
+    },
   },
 });
 </script>

@@ -25,3 +25,4 @@ export const total = (payload = {}) => myrequert(["total"], payload);
 export const add = (payload = {}) => myrequert(["add"], payload);
 export const change = (payload = {}) => myrequert(["change"], payload);
 export const remove = (payload = {}) => myrequert(["remove"], payload);
+export const show = (payload = {}) => myrequert(["show"], payload);
