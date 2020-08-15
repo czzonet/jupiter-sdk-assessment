@@ -6,6 +6,7 @@ import { debug, models, MODEL } from "../define";
 import { copyFile, unlink, exists, readFile, writeFile } from "fs";
 import * as util from "util";
 import * as path from "path";
+import * as moment from "moment";
 
 export const total: RequestHandler = async (req, res, next) => {
   debug(`body: %O`, req.body);
@@ -47,6 +48,10 @@ export const show: RequestHandler = async (req, res, next) => {
 
   try {
     // Add logic here
+    let isExist = false;
+    let lockId = 0;
+    let isLocked = false;
+    let data = {};
 
     let { id } = req.body;
 
@@ -59,22 +64,68 @@ export const show: RequestHandler = async (req, res, next) => {
       attributes: ["id", "title"],
     });
 
-    /** Output file name with id */
-    const uploadPath = path.resolve(
-      __dirname,
-      "../../../../../../upload/" + id
-    );
-    /** Read file */
-    const content = await util.promisify(readFile)(uploadPath, {
-      encoding: "utf8",
-    });
+    if (record === null) {
+      // Use default
+    } else {
+      isExist = true;
 
-    const data = { ...JSON.parse(JSON.stringify(record)), content };
+      // Lock if not exist and not valid, otherwise set lock flag
+      /** Find lock */
+      const locking = await models["locking"].findOne({
+        where: { helloId: id },
+        attributes: ["id", "date"],
+      });
+
+      if (locking === null) {
+        /** Add lock */
+        const lockingNew = await models["locking"].create({
+          date: moment(),
+          helloId: id,
+        });
+        lockId = lockingNew.id;
+      } else {
+        const lockDate = locking.date;
+
+        /** Check overtime */
+        const isLockValid =
+          moment() > moment(lockDate).add(60, "seconds") ? false : true;
+
+        if (isLockValid) {
+          /** Set lock flag */
+          isLocked = true;
+        } else {
+          // Lock because of not valid
+          /** Clear old lock */
+          locking.destroy();
+          /** Add lock */
+          const lockingNew = await models["locking"].create({
+            date: moment(),
+            helloId: id,
+          });
+          lockId = lockingNew.id;
+        }
+      }
+
+      /** Output file name with id */
+      const uploadPath = path.resolve(
+        __dirname,
+        "../../../../../../upload/" + id
+      );
+      /** Read file */
+      const content = await util.promisify(readFile)(uploadPath, {
+        encoding: "utf8",
+      });
+
+      data = { ...JSON.parse(JSON.stringify(record)), content };
+    }
 
     res.json({
       code: 200,
       message: "ok",
       data,
+      isExist,
+      isLocked,
+      lockId,
     });
   } catch (error) {
     next(error);
