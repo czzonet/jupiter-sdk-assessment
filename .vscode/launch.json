@@ -13,7 +13,7 @@
       // "preLaunchTask": "tsc: build - tsconfig.json",
       "console": "externalTerminal",
       "env": {
-        "DEBUG": "*,-sequelize:sql:pg,-express:router:*",
+        "DEBUG": "*,-sequelize:sql:*,-express:router:*",
         "PORT": "6003",
         "SYNC": "",
         "FORCE": "",

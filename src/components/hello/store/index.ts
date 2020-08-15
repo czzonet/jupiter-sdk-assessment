@@ -51,6 +51,10 @@ const store = {
       commit("EDITORTITLE", title);
       commit("EDITORCONTENT", content);
     },
+    EditorEmpty: async ({ state, commit, dispatch }, payload) => {
+      commit("EDITORTITLE", "");
+      commit("EDITORCONTENT", "");
+    },
     Add: async ({ state, commit, dispatch }, payload) => {
       try {
         commit("LOADING_ON", true);
