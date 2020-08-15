@@ -25,5 +25,11 @@ export default {
       component: () =>
         import(/* webpackChunkName: "hello" */ "../views/total/index.vue"),
     },
+    {
+      path: "change/:id",
+      meta: { name: NAME },
+      component: () =>
+        import(/* webpackChunkName: "hello" */ "../views/change/index.vue"),
+    },
   ],
 };
