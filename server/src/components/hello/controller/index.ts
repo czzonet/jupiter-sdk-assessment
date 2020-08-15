@@ -119,7 +119,9 @@ export const show: RequestHandler = async (req, res, next) => {
         } else {
           // Lock because of not valid
           /** Clear old lock */
-          locking.destroy();
+          await models["locking"].destroy({
+            where: { helloId: id },
+          });
           /** Add lock */
           const lockingNew = await models["locking"].create({
             date: moment(),

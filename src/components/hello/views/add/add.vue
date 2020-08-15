@@ -24,13 +24,16 @@ export default Vue.extend({
     },
   },
   methods: {
-    ...mapActions(NAME, ["Add"]),
+    ...mapActions(NAME, ["EditorEmpty", "Add"]),
     submit() {
       (this as any).Add().then((d: any) => {
         d ? this.$message.success("Success") : this.$message.error("Error");
         this.$router.push("/main/hello/total");
       });
     },
+  },
+  mounted() {
+    (this as any).EditorEmpty();
   },
 });
 </script>
