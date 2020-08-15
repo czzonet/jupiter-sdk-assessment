@@ -43,6 +43,29 @@ export const total: RequestHandler = async (req, res, next) => {
   }
 };
 
+export const download: RequestHandler = async (req, res, next) => {
+  debug(`body: %O`, req.body);
+
+  try {
+    // Add logic here
+
+    let { id } = req.body;
+
+    if (typeof id !== "number" || id < 1) {
+      id = 0;
+    }
+
+    /** Output file name with id */
+    const uploadPath = path.resolve(
+      __dirname,
+      "../../../../../../upload/" + id
+    );
+    res.download(uploadPath);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const show: RequestHandler = async (req, res, next) => {
   debug(`body: %O`, req.body);
 
