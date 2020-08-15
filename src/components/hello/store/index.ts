@@ -112,7 +112,7 @@ const store = {
         console.log("[I] [Show]: ", res.data);
         await dispatch("Editor", res.data.data);
 
-        return true;
+        return res.data;
       } catch (error) {
         console.log("[E] [Show]: ", error);
         return false;

@@ -23,23 +23,73 @@ export default Vue.extend({
     isEmpty() {
       return this.pipeEditor.isEmpty;
     },
+    id() {
+      return parseInt(this.$route.params.id);
+    },
+  },
+  watch: {
+    id: {
+      handler() {
+        (this as any).pullHandler();
+      },
+    },
   },
   methods: {
     ...mapActions(NAME, ["Change", "Show"]),
     submit() {
-      (this as any)
-        .Change({ id: parseInt(this.$route.params.id) })
-        .then((d: any) => {
-          d ? this.$message.success("Success") : this.$message.error("Error");
-          this.$router.push("/main/hello/total");
-        });
+      (this as any).Change({ id: this.id }).then((d: any) => {
+        d ? this.$message.success("Success") : this.$message.error("Error");
+        this.$router.push("/main/hello/total");
+      });
     },
     cancle() {
       this.$router.back();
     },
+    pullHandler() {
+      const handler = async () => {
+        const resData = await (this as any).Show({
+          id: this.id,
+        });
+
+        if (resData === false) {
+        } else {
+          const { isExist, isLocked } = resData;
+
+          if (isExist) {
+            if (isLocked) {
+              this.$confirm("File is locked", "Tip", {
+                confirmButtonText: "Done",
+                type: "warning",
+              })
+                .then(() => {
+                  this.$router.push("/main/hello/total");
+                })
+
+                .catch(() => {
+                  this.$router.push("/main/hello/total");
+                });
+            } else {
+            }
+          } else {
+            this.$confirm("File not exist", "Tip", {
+              confirmButtonText: "Done",
+              type: "warning",
+            })
+              .then(() => {
+                this.$router.push("/main/hello/total");
+              })
+              .catch(() => {
+                this.$router.push("/main/hello/total");
+              });
+          }
+        }
+      };
+
+      handler().then();
+    },
   },
   mounted() {
-    (this as any).Show({ id: parseInt(this.$route.params.id) });
+    (this as any).pullHandler();
   },
 });
 </script>
