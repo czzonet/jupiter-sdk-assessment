@@ -10,12 +10,15 @@
     <el-table-column type="index"></el-table-column>
     <el-table-column prop="title" label="Title"></el-table-column>
     <el-table-column
-      width="100"
+      width="200"
       label="
     Operations"
     >
       <template slot-scope="scope">
         <div class="wrapper">
+          <el-button type="text" @click="downloadHandler(scope.row)"
+            >Download</el-button
+          >
           <el-button type="text" @click="editHandler(scope.row)"
             >Edit</el-button
           >
@@ -27,7 +30,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import { NAME } from "../../define";
 export default Vue.extend({
   name: "TotalTable",
@@ -38,8 +41,30 @@ export default Vue.extend({
     ...mapState(NAME, ["totalTable"]),
   },
   methods: {
+    ...mapActions(NAME, ["Download"]),
     editHandler(row: any) {
       this.$router.push(`/main/${NAME}/change/${row.id}`);
+    },
+    downloadHandler(row: any) {
+      this.Download(row).then((data) => {
+        if (data) {
+          const url = window.URL.createObjectURL(new Blob([data]));
+          /** Use <a> to download */
+          const link = document.createElement("a");
+          link.style.display = "none";
+          link.href = url;
+          link.setAttribute("download", row.title);
+
+          document.body.appendChild(link);
+          link.click();
+
+          /** Clean */
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(link);
+        } else {
+          this.$message.error("Download Error");
+        }
+      });
     },
   },
 });

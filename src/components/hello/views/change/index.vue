@@ -52,6 +52,7 @@ export default Vue.extend({
         });
 
         if (resData === false) {
+          console.log("");
         } else {
           const { isExist, isLocked } = resData;
 
@@ -69,6 +70,7 @@ export default Vue.extend({
                   this.$router.push("/main/hello/total");
                 });
             } else {
+              console.log("");
             }
           } else {
             this.$confirm("File not exist", "Tip", {

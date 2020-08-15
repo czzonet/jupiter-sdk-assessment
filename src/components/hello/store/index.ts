@@ -1,4 +1,4 @@
-import { total, add, show, change } from "../api";
+import { total, add, show, change, download } from "../api";
 
 const store = {
   namespaced: true,
@@ -118,6 +118,21 @@ const store = {
         return false;
       } finally {
         commit("LOADING_OFF", false);
+      }
+    },
+    Download: async ({ state, commit, dispatch }, payload) => {
+      try {
+        // commit("LOADING_ON", true);
+
+        const res = await download(payload);
+        console.log("[I] [Download]: ", res.data);
+
+        return res.data;
+      } catch (error) {
+        console.log("[E] [Download]: ", error);
+        return false;
+      } finally {
+        // commit("LOADING_OFF", false);
       }
     },
   },
