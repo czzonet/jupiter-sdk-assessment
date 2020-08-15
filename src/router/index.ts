@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
+import IndexPage from "../views/IndexPage/index.vue";
 import BarLayout from "../views/layout/index.vue";
 
 import Hello from "../components/hello/route/index";
@@ -10,7 +11,11 @@ const routes: Array<RouteConfig> = [
   {
     path: "/",
     name: "/",
-    redirect: "/main",
+    redirect: "/index",
+  },
+  {
+    path: "/index",
+    component: IndexPage,
   },
   {
     path: "/main",
