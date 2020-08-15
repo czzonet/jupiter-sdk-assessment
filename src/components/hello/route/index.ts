@@ -6,7 +6,7 @@ export default {
   name: NAME,
   component: () => import(/* webpackChunkName: "hello" */ "../index.vue"),
   meta: { name: NAME },
-  redirect: `/main/${NAME}/home`,
+  redirect: `/main/${NAME}/add`,
   children: [
     {
       path: "home",

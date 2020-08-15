@@ -19,7 +19,9 @@ export default Vue.extend({
     ...mapActions(NAME, ["Total"]),
   },
   mounted() {
-    this.Total();
+    this.Total().then((d: any) => {
+      d ? null : this.$message.error("Error");
+    });
   },
 });
 </script>
