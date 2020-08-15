@@ -11,9 +11,9 @@
       "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}/server/dist/index.js",
       // "preLaunchTask": "tsc: build - tsconfig.json",
-      "console": "integratedTerminal",
+      "console": "externalTerminal",
       "env": {
-        "DEBUG": "*,-sequelize:sql:pg,-express:router:*",
+        "DEBUG": "*,-sequelize:sql:*,-express:router:*",
         "PORT": "6003",
         "SYNC": "",
         "FORCE": "",

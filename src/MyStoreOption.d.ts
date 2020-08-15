@@ -1,18 +1,29 @@
 /**
- * 自定义仓库类型，比官方类型更详细。
+ * MyStore
  */
 declare interface MyStoreOption<S> {
-  /** 命名空间  */
+  /** namespaced  */
   namespaced: boolean;
-  /** 状态 */
+  /** state */
   state: S;
-  /** 变更状态 */
+  /** getters */
+  getters?: Getters<S>;
+  /** mutations */
   mutations: Mutations<S>;
-  /** 执行操作 */
+  /** actions */
   actions: Actions<S>;
-  /** 模块 */
+  /** modules */
   modules?: Modules;
 }
+
+type Getters<S> = {
+  [prop: string]: (
+    state: S,
+    getters: any,
+    rootState: any,
+    rootGetters: any
+  ) => any;
+};
 
 /** 模块 */
 type Modules = any;

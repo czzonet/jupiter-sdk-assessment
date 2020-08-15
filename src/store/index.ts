@@ -3,7 +3,7 @@ import Vuex, { StoreOptions } from "vuex";
 
 Vue.use(Vuex);
 
-import helloworld from "../components/helloworld/store/index";
+import hello from "../components/hello/store";
 
 const store = {
   state: {
@@ -12,7 +12,7 @@ const store = {
   },
   mutations: {},
   actions: {},
-  modules: { helloworld },
+  modules: { hello },
 } as StoreOptions<State>;
 
 const MainStore = new Vuex.Store(store);

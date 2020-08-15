@@ -38,6 +38,11 @@ function main() {
   /* create if not exist */
   fs.existsSync(frontPath) ? null : fs.mkdirSync(frontPath);
 
+  /* folder of public */
+  const uploadPath = path.resolve(__dirname, "../../../upload");
+  /* create if not exist */
+  fs.existsSync(uploadPath) ? null : fs.mkdirSync(uploadPath);
+
   /** entry for front-end dist */
   app.use("/", express.static(frontPath));
 

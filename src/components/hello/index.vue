@@ -12,7 +12,7 @@ import { mapState } from "vuex";
 export default {
   name: `${NAME}`,
   computed: {
-    ...mapState([NAME], ["loading"]),
+    ...mapState(NAME, ["loading"]),
   },
 };
 </script>
