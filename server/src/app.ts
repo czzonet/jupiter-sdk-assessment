@@ -4,7 +4,6 @@ import * as express from "express";
 import * as morgan from "morgan";
 import * as errorhandler from "errorhandler";
 import * as bodyParser from "body-parser";
-import * as helmet from "helmet";
 /** fs */
 import * as fs from "fs";
 import * as path from "path";
@@ -26,7 +25,6 @@ function main() {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(cookieParser());
-  app.use(helmet());
 
   /* folder of public */
   const publicPath = path.resolve(__dirname, "../../public");
